@@ -1,0 +1,74 @@
+[
+    {
+        "title":"Which of the following function of the String object returns the character in the string starting at the specified position via the specified number of characters?",
+        "answer_1":"slice()",
+        "answer_2":"split()",
+        "answer_3":"substr()",
+        "answer_4":"search()",
+        "correct_ans":"substr()"
+    },
+
+    {
+       
+        "title": "Declare a variable called username.",
+        "answer_1":"var",
+        "answer_2":"string",
+        "answer_3":"char",
+        "answer_4":"declar",
+        "correct_ans":"var"
+    },
+
+    {
+    "title": "How can a datatype be declared to be a constant type?",
+    "answer_1": "var",
+    "answer_2": "let",
+    "answer_3": "const",
+    "answer_4": "constant",
+    "correct_ans": "const"
+  },
+
+   {
+    "title": "Which of the following keywords is used to define a variable in Javascript?",
+    "answer_1": "var",
+    "answer_2": "let",
+    "answer_3": "Both A and B",
+    "answer_4": "None of the above",
+    "correct_ans": "Both A and B"
+  },
+
+  {
+    "title": "Which of the following methods is used to access HTML elements using Javascript?",
+    "answer_1": "getElementById()",
+    "answer_2": "querySelector()",
+    "answer_3": "Both A and B",
+    "answer_4": "None of the above",
+    "correct_ans": "Both A and B"
+  },
+
+  {
+    "title": "Which of the following methods/operation does javascript use instead of == and !=?",
+    "answer_1": " JavaScript uses equalto()",
+    "answer_2": "JavaScript uses equals() and notequals() instead",
+    "answer_3": "JavaScript uses bitwise checking",
+    "answer_4": " JavaScript uses === and !== instead",
+    "correct_ans": " JavaScript uses === and !== instead"
+  },
+
+  {
+    "title": "When an operator’s value is NULL, the typeof returned by the unary operator is:",
+    "answer_1": "Boolean",
+    "answer_2": "Undefined",
+    "answer_3": "Object",
+    "answer_4": "Integer",
+    "correct_ans": "Object"
+  },
+
+  {
+    "title": "Which function is used to serialize an object into a JSON string in Javascript?",
+    "answer_1": "stringify()",
+    "answer_2": "parse()",
+    "answer_3": "convert()",
+    "answer_4": "None of the above",
+    "correct_ans": "stringify()"
+  }
+]

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Mode</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" defer></script>
+    <script src="js/script.js" defer></script>
+</head>
+
+<body>
+    <div class="home-page">
+        <h1>Test Mode</h1>
+        <p>A website where you can test your skills in some technologies related to programming.This website has been
+            developed by <a href="https://www.linkedin.com/in/rahma-esmail" target="_blank">Rahma Esmail</a></p>
+        <div class="btns">
+            <button class="view-test-btn">View Test</button>
+        </div>
+    </div>
+
+    <div class="quiz-page hide">
+        <div class="question-info">
+            <p class="num-of-question">Question number <span class="num"></span>out of <span class="length"></span></p>
+            <div class="score-timer">
+                <p class="scoreEle">Score : <span class="score">0</span></p>
+                <p class="timer">30</p>
+            </div>
+        </div>
+
+            <div class="question">
+                <div class="ques-container">
+                    <p></p>
+                </div>
+            </div>
+
+            <ul>
+            </ul>
+            <div class="next-prev-ques">
+            <div class="prev-question">
+                <span>
+                    <ion-icon name="chevron-back-outline" class="prev-icon"></ion-icon>
+                </span><span class="text">Back</span>
+            </div>
+            <div class="next-question hide"><span class="text">Next</span>
+                <span>
+                    <ion-icon name="chevron-forward-outline" class="next-icon"></ion-icon>
+                    </span>
+
+            </div>
+
+            <div class="check-question"><span class="text">Check</span>
+                <span>
+                    <ion-icon name="checkmark-done" class="check-icon"></ion-icon>
+                </span>
+            
+            </div>
+                </div>
+    </div>
+
+    <div class="leaderboard hide">
+        <div class="submit-container">
+            <h2>Quiz Submit</h2>
+            <p>Score :  <span class="leader-score"></span></p>
+            <input type="text" placeholder="Enter Your Name">
+            <button class="submit-btn">Submit</button>
+        </div>
+        <div class="leaderboard-container">
+            <h2>Leaderboard</h2>
+
+            <div class="username-header">
+                <h5>userName</h5>
+                <h5>Score</h5>
+            </div>
+            <div class="player">
+                <div class="player-header-info">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
