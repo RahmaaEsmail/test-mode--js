@@ -5,6 +5,7 @@
         "answer_2":"split()",
         "answer_3":"substr()",
         "answer_4":"search()",
+        "index":"2",
         "correct_ans":"substr()"
     },
 
@@ -15,6 +16,7 @@
         "answer_2":"string",
         "answer_3":"char",
         "answer_4":"declar",
+        "index":"0",
         "correct_ans":"var"
     },
 
@@ -24,6 +26,7 @@
     "answer_2": "let",
     "answer_3": "const",
     "answer_4": "constant",
+    "index":"2",
     "correct_ans": "const"
   },
 
@@ -33,6 +36,7 @@
     "answer_2": "let",
     "answer_3": "Both A and B",
     "answer_4": "None of the above",
+    "index":"2",
     "correct_ans": "Both A and B"
   },
 
@@ -42,6 +46,7 @@
     "answer_2": "querySelector()",
     "answer_3": "Both A and B",
     "answer_4": "None of the above",
+    "index":"2",
     "correct_ans": "Both A and B"
   },
 
@@ -51,6 +56,7 @@
     "answer_2": "JavaScript uses equals() and notequals() instead",
     "answer_3": "JavaScript uses bitwise checking",
     "answer_4": " JavaScript uses === and !== instead",
+    "index":"3",
     "correct_ans": " JavaScript uses === and !== instead"
   },
 
@@ -60,6 +66,7 @@
     "answer_2": "Undefined",
     "answer_3": "Object",
     "answer_4": "Integer",
+    "index":"2",
     "correct_ans": "Object"
   },
 
@@ -69,6 +76,7 @@
     "answer_2": "parse()",
     "answer_3": "convert()",
     "answer_4": "None of the above",
+    "index":"0",
     "correct_ans": "stringify()"
   }
 ]
