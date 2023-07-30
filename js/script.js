@@ -78,6 +78,7 @@ const displayElements = (allQuestions, currentIndex) => {
     if (currentIndex < lastQuestionReached) {
         isAnswered = true
         removeCheckBtn()
+        // ...
     } else {
         isAnswered = false
         removeNextBtn()
@@ -102,7 +103,7 @@ const displayElements = (allQuestions, currentIndex) => {
 }
 
 
-const checkChoosedAnswer = (ans, indexOfAnswer, items, score) => {
+const checkChoosedAnswer = (ans, indexOfAnswer, items) => {
     if (ans.dataset.index == indexOfAnswer) {
         items.forEach(item => {
             item.classList.remove("wrong-answer")
@@ -127,7 +128,6 @@ const checkChoosedAnswer = (ans, indexOfAnswer, items, score) => {
 
 const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
     const items = list.querySelectorAll('li');
-    const timerEle = document.querySelector(".timer")
 
     items.forEach(item => {
         item.addEventListener("click", function () {
@@ -138,12 +138,6 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
             ans = this;
             this.classList.add("choosen-answer")
             checked = true;
-
-            if (this.dataset.index == indexOfAnswer)
-                score += 5;
-
-            if (this.dataset.index == indexOfAnswer && timerEle.innerHTML == 0)
-                score -= 3;
             // checkAnswer(ans, indexOfAnswer, items, score)
         })
         // checkAnswer(ans, indexOfAnswer, items, score)
@@ -152,14 +146,26 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
 
     checkAnsBtn.addEventListener('click', () => {
         if (checked) {
+            const timerEle = document.querySelector(".timer")
+            const chosenAnswer = document.querySelector(".choosen-answer")
+            console.log(score)
+            if (chosenAnswer.dataset.index == indexOfAnswer) {
+                score += 5;
+            }
+            if (chosenAnswer.dataset.index == indexOfAnswer && timerEle.innerHTML == 0) {
+                score -= 3;
+            }
+            console.log(score)
+            console.log("+++++")
+
             let obj = {
-                ans: ans.dataset.index,
+                ans: chosenAnswer.dataset.index,
                 correctAns: allQuestions[currentIndex].index,
             }
             undoStack.push(obj);
             redoStack.length = 0;
             clearInterval(time)
-            checkChoosedAnswer(ans, indexOfAnswer, items, score)
+            checkChoosedAnswer(chosenAnswer, indexOfAnswer, items)
             removeCheckBtn()
             isAnswered = true
 
