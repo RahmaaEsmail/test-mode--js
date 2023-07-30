@@ -6,13 +6,12 @@ const nextQuestion = document.querySelector(".next-question");
 const checkAnsBtn = document.querySelector(".check-question");
 const submitBtn = document.querySelector(".submit-btn");
 const scoreEle = document.querySelector(".score");
-let undoStack = [];
-let redoStack = [];
 let dataList = [];
 let ans = '';
 let time, count, setTimer, checked = false, score = 0, currentIndex = 0;
 let isAnswered = false
 let lastQuestionReached = 0
+const allUserAnswers = []
 
 
 const showHomePage = () => {
@@ -69,29 +68,6 @@ const displayElements = (allQuestions, currentIndex) => {
         return;
     }
 
-    console.log({
-        currentIndex,
-        lastQuestionReached,
-        isAnswered
-    })
-
-    if (currentIndex < lastQuestionReached) {
-        isAnswered = true
-        removeCheckBtn()
-        // ...
-    } else {
-        isAnswered = false
-        removeNextBtn()
-    }
-
-    console.log({
-        currentIndex,
-        lastQuestionReached,
-        isAnswered
-    })
-
-    console.log("#####")
-
     quesContainer.innerHTML = allQuestions[currentIndex].title;
     let htmlList = `
     <li data-index = "0">${allQuestions[currentIndex].answer_1}</li>
@@ -100,6 +76,30 @@ const displayElements = (allQuestions, currentIndex) => {
     <li data-index = "3">${allQuestions[currentIndex].answer_4}</li>`
     list.innerHTML = htmlList;
     chooseAnswer(allQuestions, list, allQuestions[currentIndex].index)
+
+    if (currentIndex < lastQuestionReached) {
+        isAnswered = true
+        removeCheckBtn()
+
+        console.log({
+            userAnswer: allUserAnswers[currentIndex],
+            currentQuestion: allQuestions[currentIndex].index
+        })
+
+        const answerItems = list.querySelectorAll("li")
+        if (allUserAnswers[currentIndex] === allQuestions[currentIndex].index) {
+            console.log("CCCCCCCc")
+            answerItems[allUserAnswers[currentIndex]].classList.add("correct-answer")
+        } else {
+            console.log("WWWWWWWWWW")
+            answerItems[allUserAnswers[currentIndex]].classList.add("wrong-answer")
+            answerItems[allQuestions[currentIndex].index].classList.add("correct-answer")
+        }
+
+    } else {
+        isAnswered = false
+        removeNextBtn()
+    }
 }
 
 
@@ -158,12 +158,7 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
             console.log(score)
             console.log("+++++")
 
-            let obj = {
-                ans: chosenAnswer.dataset.index,
-                correctAns: allQuestions[currentIndex].index,
-            }
-            undoStack.push(obj);
-            redoStack.length = 0;
+            allUserAnswers.push(chosenAnswer.dataset.index)
             clearInterval(time)
             checkChoosedAnswer(chosenAnswer, indexOfAnswer, items)
             removeCheckBtn()
@@ -291,8 +286,6 @@ const getPrevQuestion = (allQuestions) => {
         displayElements(allQuestions, currentIndex)
         clearInterval(time)
         removeCheckBtn()
-        const lastEle = undoStack.pop();
-        redoStack.push(lastEle);    
     }
 }
 
