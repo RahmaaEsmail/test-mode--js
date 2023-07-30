@@ -11,6 +11,8 @@ let redoStack = [];
 let dataList = [];
 let ans = '';
 let time, count, setTimer, checked = false, score = 0, currentIndex = 0;
+let isAnswered = false
+let lastQuestionReached = 0
 
 
 const showHomePage = () => {
@@ -67,6 +69,28 @@ const displayElements = (allQuestions, currentIndex) => {
         return;
     }
 
+    console.log({
+        currentIndex,
+        lastQuestionReached,
+        isAnswered
+    })
+
+    if (currentIndex < lastQuestionReached) {
+        isAnswered = true
+        removeCheckBtn()
+    } else {
+        isAnswered = false
+        removeNextBtn()
+    }
+
+    console.log({
+        currentIndex,
+        lastQuestionReached,
+        isAnswered
+    })
+
+    console.log("#####")
+
     quesContainer.innerHTML = allQuestions[currentIndex].title;
     let htmlList = `
     <li data-index = "0">${allQuestions[currentIndex].answer_1}</li>
@@ -75,7 +99,6 @@ const displayElements = (allQuestions, currentIndex) => {
     <li data-index = "3">${allQuestions[currentIndex].answer_4}</li>`
     list.innerHTML = htmlList;
     chooseAnswer(allQuestions, list, allQuestions[currentIndex].index)
-    removeNextBtn()
 }
 
 
@@ -138,6 +161,11 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
             clearInterval(time)
             checkChoosedAnswer(ans, indexOfAnswer, items, score)
             removeCheckBtn()
+            isAnswered = true
+
+            if (currentIndex >= lastQuestionReached) {
+                lastQuestionReached++
+            }
         }
         else
             swal("Choose First", '', 'info')
@@ -244,19 +272,21 @@ const getNextQuestion = (allQuestions) => {
 }
 
 const getPrevQuestion = (allQuestions) => {
+    console.log(isAnswered)
+    if (!isAnswered) {
+        swal("Not answered", "You need to answer first", "info")
+        return
+    }
+
     if (currentIndex < 1)
         swal("First Question", "You can't go back", "warning")
     else {
-        if (!checked)
-            swal("Not Checked", "You need to check the correct answer first", "info")
-        if (currentIndex > 0) {
-            currentIndex--;
-            displayElements(allQuestions, currentIndex)
-            clearInterval(time)
-            removeCheckBtn()
-            const lastEle = undoStack.pop();
-            redoStack.push(lastEle);    
-        }
+        currentIndex--;
+        displayElements(allQuestions, currentIndex)
+        clearInterval(time)
+        removeCheckBtn()
+        const lastEle = undoStack.pop();
+        redoStack.push(lastEle);    
     }
 }
 
