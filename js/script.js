@@ -81,17 +81,10 @@ const displayElements = (allQuestions, currentIndex) => {
         isAnswered = true
         removeCheckBtn()
 
-        console.log({
-            userAnswer: allUserAnswers[currentIndex],
-            currentQuestion: allQuestions[currentIndex].index
-        })
-
         const answerItems = list.querySelectorAll("li")
         if (allUserAnswers[currentIndex] === allQuestions[currentIndex].index) {
-            console.log("CCCCCCCc")
             answerItems[allUserAnswers[currentIndex]].classList.add("correct-answer")
         } else {
-            console.log("WWWWWWWWWW")
             answerItems[allUserAnswers[currentIndex]].classList.add("wrong-answer")
             answerItems[allQuestions[currentIndex].index].classList.add("correct-answer")
         }
@@ -148,15 +141,12 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
         if (checked) {
             const timerEle = document.querySelector(".timer")
             const chosenAnswer = document.querySelector(".choosen-answer")
-            console.log(score)
             if (chosenAnswer.dataset.index == indexOfAnswer) {
                 score += 5;
             }
             if (chosenAnswer.dataset.index == indexOfAnswer && timerEle.innerHTML == 0) {
                 score -= 3;
             }
-            console.log(score)
-            console.log("+++++")
 
             allUserAnswers.push(chosenAnswer.dataset.index)
             clearInterval(time)
@@ -273,7 +263,6 @@ const getNextQuestion = (allQuestions) => {
 }
 
 const getPrevQuestion = (allQuestions) => {
-    console.log(isAnswered)
     if (!isAnswered) {
         swal("Not answered", "You need to answer first", "info")
         return
