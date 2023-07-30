@@ -130,7 +130,7 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
     const items = list.querySelectorAll('li');
 
     items.forEach(item => {
-        item.addEventListener("click", function () {
+        item.onclick = function () {
             items.forEach(item => {
                 item.classList.remove("choosen-answer")
             })
@@ -139,12 +139,12 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
             this.classList.add("choosen-answer")
             checked = true;
             // checkAnswer(ans, indexOfAnswer, items, score)
-        })
+        }
         // checkAnswer(ans, indexOfAnswer, items, score)
         checked = false;
     })
 
-    checkAnsBtn.addEventListener('click', () => {
+    checkAnsBtn.onclick = () => {
         if (checked) {
             const timerEle = document.querySelector(".timer")
             const chosenAnswer = document.querySelector(".choosen-answer")
@@ -175,7 +175,7 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
         }
         else
             swal("Choose First", '', 'info')
-    })
+    }
 }
 
 // const checkAnswer = (answer, indexOfAnswer, items , score) => {
