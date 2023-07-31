@@ -6,11 +6,12 @@ const nextQuestion = document.querySelector(".next-question");
 const checkAnsBtn = document.querySelector(".check-question");
 const submitBtn = document.querySelector(".submit-btn");
 const scoreEle = document.querySelector(".score");
-let undoStack = [];
-let redoStack = [];
 let dataList = [];
 let ans = '';
 let time, count, setTimer, checked = false, score = 0, currentIndex = 0;
+let isAnswered = false
+let lastQuestionReached = 0
+const allUserAnswers = []
 
 
 const showHomePage = () => {
@@ -47,39 +48,55 @@ const removeNextBtn = () => {
 
 const getData = async () => {
     const data = await fetch('./jsQuestion.json');
-    const result = await data.json();
-    init(result, currentIndex)
+    const allQuestions = await data.json();
+    init(allQuestions, currentIndex)
 }
 
 
 
-const displayElements = (result, currentIndex) => {
+const displayElements = (allQuestions, currentIndex) => {
     const numOfQuestion = document.querySelector(".num-of-question");
     const quesContainer = document.querySelector(".ques-container p");
     const list = document.querySelector("ul");
 
 
-    numOfQuestion.innerHTML = `Question number <span class="current-ques">${currentIndex + 1}</span> out of ${result.length}`;
-    if (result.length == currentIndex) {
+    numOfQuestion.innerHTML = `Question number <span class="current-ques">${currentIndex + 1}</span> out of ${allQuestions.length}`;
+    if (allQuestions.length == currentIndex) {
         swal("Test Completed", "You have answered all questions", 'info')
         clearTimeout(setTimer)
         showLeaderBoard(score)
         return;
     }
 
-    quesContainer.innerHTML = result[currentIndex].title;
+    quesContainer.innerHTML = allQuestions[currentIndex].title;
     let htmlList = `
-    <li data-index = "0">${result[currentIndex].answer_1}</li>
-    <li data-index = "1">${result[currentIndex].answer_2}</li>
-    <li data-index = "2">${result[currentIndex].answer_3}</li>
-    <li data-index = "3">${result[currentIndex].answer_4}</li>`
+    <li data-index = "0">${allQuestions[currentIndex].answer_1}</li>
+    <li data-index = "1">${allQuestions[currentIndex].answer_2}</li>
+    <li data-index = "2">${allQuestions[currentIndex].answer_3}</li>
+    <li data-index = "3">${allQuestions[currentIndex].answer_4}</li>`
     list.innerHTML = htmlList;
-    chooseAnswer(result, list, result[currentIndex].index)
-    removeNextBtn()
+    chooseAnswer(allQuestions, list, allQuestions[currentIndex].index)
+
+    if (currentIndex < lastQuestionReached) {
+        isAnswered = true
+        removeCheckBtn()
+
+        const answerItems = list.querySelectorAll("li")
+        if (allUserAnswers[currentIndex] === allQuestions[currentIndex].index) {
+            answerItems[allUserAnswers[currentIndex]].classList.add("correct-answer")
+        } else {
+            answerItems[allUserAnswers[currentIndex]].classList.add("wrong-answer")
+            answerItems[allQuestions[currentIndex].index].classList.add("correct-answer")
+        }
+
+    } else {
+        isAnswered = false
+        removeNextBtn()
+    }
 }
 
 
-const checkChoosedAnswer = (ans, indexOfAnswer, items, score) => {
+const checkChoosedAnswer = (ans, indexOfAnswer, items) => {
     if (ans.dataset.index == indexOfAnswer) {
         items.forEach(item => {
             item.classList.remove("wrong-answer")
@@ -102,12 +119,11 @@ const checkChoosedAnswer = (ans, indexOfAnswer, items, score) => {
     }
 }
 
-const chooseAnswer = (result, list, indexOfAnswer) => {
+const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
     const items = list.querySelectorAll('li');
-    const timerEle = document.querySelector(".timer")
 
     items.forEach(item => {
-        item.addEventListener("click", function () {
+        item.onclick = function () {
             items.forEach(item => {
                 item.classList.remove("choosen-answer")
             })
@@ -115,33 +131,36 @@ const chooseAnswer = (result, list, indexOfAnswer) => {
             ans = this;
             this.classList.add("choosen-answer")
             checked = true;
-
-            if (this.dataset.index == indexOfAnswer)
-                score += 5;
-
-            if (this.dataset.index == indexOfAnswer && timerEle.innerHTML == 0)
-                score -= 3;
             // checkAnswer(ans, indexOfAnswer, items, score)
-        })
+        }
         // checkAnswer(ans, indexOfAnswer, items, score)
         checked = false;
     })
 
-    checkAnsBtn.addEventListener('click', () => {
+    checkAnsBtn.onclick = () => {
         if (checked) {
-            let obj = {
-                ans: ans.dataset.index,
-                correctAns: result[currentIndex].index,
+            const timerEle = document.querySelector(".timer")
+            const chosenAnswer = document.querySelector(".choosen-answer")
+            if (chosenAnswer.dataset.index == indexOfAnswer) {
+                score += 5;
             }
-            undoStack.push(obj);
-            redoStack.length = 0;
+            if (chosenAnswer.dataset.index == indexOfAnswer && timerEle.innerHTML == 0) {
+                score -= 3;
+            }
+
+            allUserAnswers.push(chosenAnswer.dataset.index)
             clearInterval(time)
-            checkChoosedAnswer(ans, indexOfAnswer, items, score)
+            checkChoosedAnswer(chosenAnswer, indexOfAnswer, items)
             removeCheckBtn()
+            isAnswered = true
+
+            if (currentIndex >= lastQuestionReached) {
+                lastQuestionReached++
+            }
         }
         else
             swal("Choose First", '', 'info')
-    })
+    }
 }
 
 // const checkAnswer = (answer, indexOfAnswer, items , score) => {
@@ -227,44 +246,43 @@ const getDataFromStorage = () => {
     return []
 }
 
-const init = (result) => {
+const init = (allQuestions) => {
     const data = getDataFromStorage()
     displayLeaderboardData(data)
-    displayElements(result, currentIndex, score)
-    initEventListeners(result)
+    displayElements(allQuestions, currentIndex, score)
+    initEventListeners(allQuestions)
     startTimerForQuestion()
 }
 
 
-const getNextQuestion = (result) => {
+const getNextQuestion = (allQuestions) => {
     currentIndex++;
-    displayElements(result, currentIndex)
+    displayElements(allQuestions, currentIndex)
     clearInterval(time)
     startTimerForQuestion(31)
 }
 
-const getPrevQuestion = (result) => {
+const getPrevQuestion = (allQuestions) => {
+    if (!isAnswered) {
+        swal("Not answered", "You need to answer first", "info")
+        return
+    }
+
     if (currentIndex < 1)
         swal("First Question", "You can't go back", "warning")
     else {
-        if (!checked)
-            swal("Not Checked", "You need to check the correct answer first", "info")
-        if (currentIndex > 0) {
-            currentIndex--;
-            displayElements(result, currentIndex)
-            clearInterval(time)
-            removeCheckBtn()
-            const lastEle = undoStack.pop();
-            redoStack.push(lastEle);    
-        }
+        currentIndex--;
+        displayElements(allQuestions, currentIndex)
+        clearInterval(time)
+        removeCheckBtn()
     }
 }
 
-const initEventListeners = (result, list) => {
+const initEventListeners = (allQuestions, list) => {
     const nextQuestionBtn = document.querySelector(".next-question");
     const prevQuestionBtn = document.querySelector(".prev-question");
-    nextQuestionBtn.addEventListener("click", () => { getNextQuestion(result) })
-    prevQuestionBtn.addEventListener("click", () => { getPrevQuestion(result) })
+    nextQuestionBtn.addEventListener("click", () => { getNextQuestion(allQuestions) })
+    prevQuestionBtn.addEventListener("click", () => { getPrevQuestion(allQuestions) })
     submitBtn.addEventListener("click", getUserData)
 }
 
