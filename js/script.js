@@ -251,7 +251,7 @@ const getNextQuestion = (allQuestions) => {
     currentIndex++;
     displayElements(allQuestions, currentIndex)
     clearInterval(time)
-    startTimerForQuestion(31)
+    startTimerForQuestion()
 }
 
 const getPrevQuestion = (allQuestions) => {
