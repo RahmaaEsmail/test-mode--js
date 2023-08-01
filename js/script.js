@@ -10,9 +10,16 @@ let undoStack = [];
 let redoStack = [];
 let dataList = [];
 let ans = '';
+<<<<<<< HEAD
 let time, count, setTimer, isChecked = false, score = 0, currentIndex = 0;
 let isAnswered = false;
 let lastQuestionReached = 0
+=======
+let time, count, setTimer, checked = false, score = 0, currentIndex = 0;
+let isAnswered = false
+let lastQuestionReached = 0
+const allUserAnswers = []
+>>>>>>> 7b296310f6ed19c39eb0be7a992ff958314ed6c4
 
 
 const showHomePage = () => {
@@ -69,6 +76,7 @@ const displayElements = (allQuestions, currentIndex) => {
         return;
     }
 
+<<<<<<< HEAD
     if (currentIndex < lastQuestionReached) {
         isAnswered = true
         removeCheckBtn()
@@ -77,6 +85,8 @@ const displayElements = (allQuestions, currentIndex) => {
         removeNextBtn()
     }
 
+=======
+>>>>>>> 7b296310f6ed19c39eb0be7a992ff958314ed6c4
     quesContainer.innerHTML = allQuestions[currentIndex].title;
     let htmlList = `
     <li data-index = "0">${allQuestions[currentIndex].answer_1}</li>
@@ -85,6 +95,26 @@ const displayElements = (allQuestions, currentIndex) => {
     <li data-index = "3">${allQuestions[currentIndex].answer_4}</li>`
     list.innerHTML = htmlList;
     chooseAnswer(allQuestions, list, allQuestions[currentIndex].index)
+<<<<<<< HEAD
+=======
+
+    if (currentIndex < lastQuestionReached) {
+        isAnswered = true
+        removeCheckBtn()
+
+        const answerItems = list.querySelectorAll("li")
+        if (allUserAnswers[currentIndex] === allQuestions[currentIndex].index) {
+            answerItems[allUserAnswers[currentIndex]].classList.add("correct-answer")
+        } else {
+            answerItems[allUserAnswers[currentIndex]].classList.add("wrong-answer")
+            answerItems[allQuestions[currentIndex].index].classList.add("correct-answer")
+        }
+
+    } else {
+        isAnswered = false
+        removeNextBtn()
+    }
+>>>>>>> 7b296310f6ed19c39eb0be7a992ff958314ed6c4
 }
 
 
@@ -123,29 +153,46 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
 
             ans = this;
             this.classList.add("choosen-answer")
+<<<<<<< HEAD
             isChecked = true;
 
+=======
+            checked = true;
+>>>>>>> 7b296310f6ed19c39eb0be7a992ff958314ed6c4
             // checkAnswer(ans, indexOfAnswer, items, score)
         })
         // checkAnswer(ans, indexOfAnswer, items, score)
-        isChecked = false;
+        checked = false;
     })
 
+<<<<<<< HEAD
     checkAnsBtn.addEventListener('click', () => {
         if (isChecked) {
             let obj = {
                 ans: ans.dataset.index,
                 correctAns: allQuestions[currentIndex].index,
+=======
+    checkAnsBtn.onclick = () => {
+        if (checked) {
+            const timerEle = document.querySelector(".timer")
+            const chosenAnswer = document.querySelector(".choosen-answer")
+            if (chosenAnswer.dataset.index == indexOfAnswer) {
+                score += 5;
+>>>>>>> 7b296310f6ed19c39eb0be7a992ff958314ed6c4
             }
             undoStack.push(obj);
             redoStack.length = 0;
             clearInterval(time)
+<<<<<<< HEAD
             if (ans.dataset.index == indexOfAnswer)
                 score += 5;
 
             if (ans.dataset.index == indexOfAnswer && timerEle.innerHTML == 0)
                 score -= 3;
             checkChoosedAnswer(ans, indexOfAnswer, items )
+=======
+            checkChoosedAnswer(chosenAnswer, indexOfAnswer, items)
+>>>>>>> 7b296310f6ed19c39eb0be7a992ff958314ed6c4
             removeCheckBtn()
             isAnswered = true
 
@@ -160,7 +207,7 @@ const chooseAnswer = (allQuestions, list, indexOfAnswer) => {
 
 // const checkAnswer = (answer, indexOfAnswer, items , score) => {
 //     checkAnsBtn.addEventListener('click', () => {
-//         if (isChecked) {
+//         if (checked) {
 //             clearInterval(time)
 //             checkChoosedAnswer(answer, indexOfAnswer, items, score)
 //             removeCheckBtn()   
@@ -258,7 +305,10 @@ const getNextQuestion = (allQuestions) => {
 }
 
 const getPrevQuestion = (allQuestions) => {
+<<<<<<< HEAD
     console.log(isAnswered)
+=======
+>>>>>>> 7b296310f6ed19c39eb0be7a992ff958314ed6c4
     if (!isAnswered) {
         swal("Not answered", "You need to answer first", "info")
         return
@@ -271,8 +321,11 @@ const getPrevQuestion = (allQuestions) => {
         displayElements(allQuestions, currentIndex)
         clearInterval(time)
         removeCheckBtn()
+<<<<<<< HEAD
         const lastEle = undoStack.pop();
         redoStack.push(lastEle);
+=======
+>>>>>>> 7b296310f6ed19c39eb0be7a992ff958314ed6c4
     }
 }
 
@@ -283,4 +336,5 @@ const initEventListeners = (allQuestions, list) => {
     prevQuestionBtn.addEventListener("click", () => { getPrevQuestion(allQuestions) })
     submitBtn.addEventListener("click", getUserData)
 }
+
 
